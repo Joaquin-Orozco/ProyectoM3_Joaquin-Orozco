@@ -1,0 +1,40 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, Arial, sans-serif;
+  background: #0f172a;
+  color: #f8fafc;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: linear-gradient(135deg, #0f172a, #111827); min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+#app { min-height: 100vh; }
+nav { display: flex; gap: 0.75rem; justify-content: center; padding: 1rem; flex-wrap: wrap; }
+nav a { padding: 0.6rem 1rem; border-radius: 999px; background: rgba(255,255,255,0.08); }
+nav a.active { background: #8b5cf6; }
+.container { max-width: 980px; margin: 0 auto; padding: 1rem; }
+.home, .about, .chat { display: grid; gap: 1rem; }
+.card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; }
+.character-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+.character-card { padding: 1rem; border-radius: 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); cursor: pointer; }
+.character-card.active { outline: 2px solid #8b5cf6; }
+.chat-shell { display: grid; gap: 1rem; }
+.messages { display: flex; flex-direction: column; gap: 0.75rem; min-height: 50vh; max-height: 60vh; overflow-y: auto; padding-right: 0.3rem; }
+.message { max-width: 85%; padding: 0.7rem 0.9rem; border-radius: 0.9rem; line-height: 1.4; }
+.message.user { align-self: flex-end; background: #8b5cf6; }
+.message.assistant { align-self: flex-start; background: #1f2937; }
+.message-meta { font-size: 0.75rem; opacity: 0.75; margin-top: 0.3rem; }
+.input-row { display: flex; gap: 0.5rem; flex-direction: column; }
+input { padding: 0.8rem 1rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.08); color: white; }
+button { padding: 0.8rem 1rem; border: none; border-radius: 0.8rem; background: #8b5cf6; color: white; cursor: pointer; }
+button.secondary { background: #334155; }
+.status { font-size: 0.9rem; opacity: 0.8; }
+@media (min-width: 700px) {
+  .character-grid { grid-template-columns: repeat(2, 1fr); }
+  .input-row { flex-direction: row; }
+  .input-row input { flex: 1; }
+}
+@media (min-width: 1024px) {
+  .character-grid { grid-template-columns: repeat(3, 1fr); }
+  .chat-shell { grid-template-columns: 2fr 1fr; align-items: start; }
+}
