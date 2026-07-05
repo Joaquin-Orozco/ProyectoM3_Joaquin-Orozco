@@ -15,8 +15,5 @@
   },
   "allowScripts": {
     "esbuild@0.21.5": true
-  },
-  "dependencies": {
-    "@rollup/rollup-win32-x64-msvc": "^4.62.2"
   }
 }
