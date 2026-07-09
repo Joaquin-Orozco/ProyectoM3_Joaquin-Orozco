@@ -6,10 +6,10 @@ export default async function handler(request, response) {
   try {
     const body = request.body || await readBody(request);
     const { messages = [], character = 'vegeta' } = body;
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = (process.env.GEMINI_API_KEY || process.env.API_KEY || '').trim();
 
     if (!apiKey) {
-      return response.status(500).json({ error: 'Falta GEMINI_API_KEY' });
+      return response.status(500).json({ error: 'Falta GEMINI_API_KEY. Añádela en Vercel como variable de entorno.' });
     }
 
     const prompt = messages.map((message) => `${message.role}: ${message.content}`).join('\n');
@@ -19,15 +19,23 @@ export default async function handler(request, response) {
       gokuBlack: 'Eres Goku Black, oscuro, sereno y breve.'
     }[character] || 'Eres un personaje de ficción, breve y conversacional.';
 
-    const geminiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
+    const geminiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: `${personality}\n\n${prompt}` }] }]
+        contents: [{ role: 'user', parts: [{ text: `${personality}\n\n${prompt}` }] }],
+        generationConfig: { temperature: 0.8, maxOutputTokens: 180 }
       })
     });
 
-    const data = await geminiResponse.json();
+    const rawText = await geminiResponse.text();
+    let data;
+    try {
+      data = rawText ? JSON.parse(rawText) : {};
+    } catch {
+      throw new Error(`Respuesta inválida de Gemini: ${rawText}`);
+    }
+
     if (!geminiResponse.ok) {
       throw new Error(data?.error?.message || 'Error en Gemini');
     }
