@@ -12,6 +12,6 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/functions.js" },
-    { "src": "/(.*)", "dest": "/src/index.html" }
+    { "src": "/(?!.*\\.).*", "dest": "/src/index.html" }
   ]
 }
