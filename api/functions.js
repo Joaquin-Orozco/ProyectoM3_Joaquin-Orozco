@@ -19,7 +19,7 @@ export default async function handler(request, response) {
       gokuBlack: 'Eres Goku Black, oscuro, sereno y breve.'
     }[character] || 'Eres un personaje de ficción, breve y conversacional.';
 
-    const model = process.env.GEMINI_MODEL || 'gemini-1.0';
+    const model = process.env.GEMINI_MODEL || 'gemini-3.1-lite';
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateText?key=${apiKey}`;
 
     const geminiResponse = await fetch(geminiUrl, {
@@ -29,8 +29,9 @@ export default async function handler(request, response) {
         prompt: {
           text: `${personality}\n\n${prompt}`
         },
-        temperature: 0.7,
-        maxOutputTokens: 220
+        temperature: 0.55,
+        maxOutputTokens: 250,
+        topP: 0.9
       })
     });
 
@@ -47,7 +48,7 @@ export default async function handler(request, response) {
       throw new Error(`Gemini: ${message}`);
     }
 
-    const text = data?.candidates?.[0]?.output || data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No pude responder.';
+    const text = data?.candidates?.[0]?.output || data?.candidates?.[0]?.content?.parts?.[0]?.text || data?.output?.text || 'No pude responder.';
     return response.status(200).json({ text });
   } catch (error) {
     return response.status(500).json({ error: error.message || 'Error inesperado' });
