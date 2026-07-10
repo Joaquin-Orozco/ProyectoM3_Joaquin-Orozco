@@ -19,7 +19,7 @@ export default async function handler(request, response) {
       gokuBlack: 'Eres Goku Black, oscuro, sereno y breve.'
     }[character] || 'Eres un personaje de ficción, breve y conversacional.';
 
-    const model = process.env.GEMINI_MODEL || 'gemini-3.1-lite';
+    const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateText?key=${apiKey}`;
 
     const geminiResponse = await fetch(geminiUrl, {
